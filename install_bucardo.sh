@@ -124,6 +124,7 @@ bucardo set default_email_to=r.ivantsiv@gmail.com
 
 #Bucardo checker
 cp -f bucardo_reanimate.sh $BINROOT/bucardo_reanimate.sh
+chmod 755 $BINROOT/bucardo_reanimate.sh
 
 read -p "Enter username, under which bucardo will run (should be webserver user):" bucardouser
 if [ -z "`grep "^${bucardouser}:" /etc/passwd`" ];then
@@ -142,8 +143,6 @@ if [ `uname` == "Darwin" ];then
 fi
 
 if [ `uname` == "Linux" ];then
-	
-
 	[ -n "`grep bucardo_reanimate.sh /etc/crontab`" ] \
 	|| echo "*/5  *  *  *  *  root  /usr/bin/bucardo_reanimate.sh $bucardouser" >>/etc/crontab
 	service cron restart
