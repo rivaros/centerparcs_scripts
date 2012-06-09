@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Cross-platform Bucardo reanimate script
+#Cross-platform Bucardo reanimate script v2.0
 if [ ! -z "$1" ]; then
       USER=$1
 else
