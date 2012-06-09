@@ -1,0 +1,85 @@
+#!/bin/sh
+#
+# Custom daemondo script for stunnel
+#
+
+# Init
+
+prefix=/opt/local
+command=/opt/local/bin/stunnel
+options=""
+configfile=/opt/local/etc/stunnel/stunnel.conf
+defaultpidfile=/var/run/stunnel.pid
+
+
+#
+# Function to grep pid file from configuration
+# TODO: better handling of starting/trailing slashes needed
+#
+get_pids() {
+
+   local file=$1
+   if test -f $file; then
+     CHROOT=`grep "^chroot" $file|sed "s;.*= *;;"`
+     PIDFILE=`grep "^pid" $file|sed "s;.*= *;;"`
+     if [ "$PIDFILE" = "" ]; then
+       PIDFILE=$defaultpidfile
+     fi
+     if test -f $CHROOT$PIDFILE; then
+       cat $CHROOT$PIDFILE
+     fi
+   fi
+}
+
+
+Start()
+{
+  ARGS="${command} ${options}"
+  PROCLIST=`get_pids $configfile`
+  if [ "$PROCLIST" ] && kill -s 0 $PROCLIST 2>/dev/null; then
+    echo -n "[Already running: $command] "
+  elif $DAEMON $ARGS; then
+    echo -n "[Started: $command] "
+  else
+    echo "[Failed: $command]"
+    echo "You should check that you have specified the pid= in you configuration file"
+    exit 1
+  fi
+}
+
+
+Stop()
+{
+  SIGNAL=${1:-TERM}
+  PROCLIST=`get_pids $configfile`
+  echo "$PROCLIST"
+  if [ "$PROCLIST" ] && kill -s 0 $PROCLIST 2>/dev/null; then
+    kill -s $SIGNAL $PROCLIST
+    echo -n "[stopped: $file] "
+  fi
+}
+
+Restart()
+{
+	Stop
+	sleep 5
+	Start
+}
+
+#
+# Run
+#
+Run()
+{
+case $1 in
+  start  ) Start   ;;
+  stop   ) Stop    ;;
+  restart) Restart ;;
+  *      ) echo "$0: unknown argument: $1";;
+esac
+}
+
+#
+# Run a phase based on the selector
+#
+Run $1
