@@ -89,7 +89,7 @@ fi
 
 if [ ! -d bucardo ]; then
     echo "Loading Bucardo...."
-    git clone git://bucardo.org/bucardo.git
+    git clone git://github.com/rivaros/bucardo.git
 fi
 
 if [ ! -d /var/run/bucardo ]; then
@@ -114,7 +114,7 @@ if [ `uname` == "Darwin" ]; then
 	BINROOT='/opt/local/bin'
 elif [ `uname` == "Linux" ];then
         LOGROOT='/var/log'
-	BINROOT='/usr/bin'
+	BINROOT='/usr/local/bin'
 fi
 
 #Bucardo general settings
@@ -162,7 +162,7 @@ if [ `uname` == "Linux" ];then
 		exit
 	fi
 	[ -n "`grep bucardo_reanimate.sh /etc/crontab`" ] \
-	|| echo "*/5  *  *  *  *  root  /usr/bin/bucardo_reanimate.sh $bucardouser" >>/etc/crontab
+	|| echo "*/5  *  *  *  *  root  $BINROOT/bucardo_reanimate.sh $bucardouser" >>/etc/crontab
 	service cron restart
 fi
 	

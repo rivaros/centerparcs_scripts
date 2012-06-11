@@ -113,7 +113,7 @@ if [[ $choice == 1 ]];then
     		bucardo add dbgroup standard local:source central
 	fi
 elif [[ $choice == 2 ]];then
-        if [ -z "`bucardo list dbgroup standard$syncname | grep standard#syncname`" ]; then
+        if [ -z "`bucardo list dbgroup standard$syncname | grep standard$syncname`" ]; then
                 bucardo add dbgroup standard$syncname local$syncname:source central$syncname
         fi
 fi
@@ -147,7 +147,7 @@ if [ `uname` == "Darwin" ]; then
         BINROOT='/opt/local/bin'
 elif [ `uname` == "Linux" ];then
         LOGROOT='/var/log'
-        BINROOT='/usr/bin'
+        BINROOT='/usr/local/bin'
 fi
 
 
