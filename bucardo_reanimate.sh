@@ -16,7 +16,7 @@ elif [ `uname` == "Linux" ];then
 	setfacl -m u:$USER:rwx /var/log
 	setfacl -d -m u:$USER:rwx /var/log
 	LOGROOT='/var/log'
-	BINROOT='/usr/bin'
+	BINROOT='/usr/local/bin'
 fi
 
 if [ ! -d /var/run/bucardo ]; then
@@ -30,14 +30,6 @@ else
 fi
 
 error=0
-if [ ! -f /var/run/bucardo/bucardo.ctl.sync.standard.pid ]; then 
-    error=1;
-    echo "BUCARDO RESTART: no bucardo.ctl.sync.standard.pid found" >> $LOGROOT/bucardo.restart.log 
-fi
-if [ ! -f /var/run/bucardo/bucardo.kid.sync.standard.pid ]; then 
-    error=1; 
-    echo "BUCARDO RESTART: no bucardo.kid.sync.standard.pid found" >> $LOGROOT/bucardo.restart.log 
-fi
 if [ ! -f /var/run/bucardo/bucardo.mcp.pid ]; then 
     error=1; 
     echo "BUCARDO RESTART: no bucardo.mcp.pid found" >> $LOGROOT/bucardo.restart.log 
