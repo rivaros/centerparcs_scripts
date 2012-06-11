@@ -165,9 +165,14 @@ if [ `uname` == "Linux" ];then
                 echo "Such user not found in the system"
                 exit
         fi
+		if [ ! -d /var/run/bucardo ]; then
+			mkdir -p /var/run/bucardo
+		fi
+		chown -R $bucardouser /var/run/bucardo >/dev/null 2>&1
+		echo "Bucardo initial start" >> $LOGROOT/bucardo.restart.log
         sudo -u $bucardouser $BINROOT/bucardo stop
-	echo "waiting 10 seconds..."
-	sleep 10
+		echo "waiting 10 seconds..."
+		sleep 10
         sudo -u $bucardouser $BINROOT/bucardo start --debugdir=$LOGROOT
 fi
 

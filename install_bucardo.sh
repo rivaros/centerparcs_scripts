@@ -102,13 +102,8 @@ if [ ! -d bucardo ]; then
     perl Makefile.PL
     make
     make install
-    cp -f bucardo $BINROOT\bucardo
+    cp -f bucardo $BINROOT/bucardo
     cd ..
-fi
-
-
-if [ ! -d /var/run/bucardo ]; then
-    mkdir /var/run/bucardo
 fi
 
 if [ -z "`bucardo show all | grep bucardo_current_version`" ]; then
@@ -118,7 +113,6 @@ if [ -z "`bucardo show all | grep bucardo_current_version`" ]; then
 else
 	echo "Bucardo seems to be installed already. If you want to reinstall, remove bucardo database."
 fi
-
 
 #Bucardo general settings
 bucardo set piddir=/var/run/bucardo
