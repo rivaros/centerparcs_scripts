@@ -171,10 +171,10 @@ elif [ `uname` == "Linux" ];then
 		chown $SUDO_USER ~/.ssh/id_dsa ~/.ssh/id_rsa
 	fi
 	chmod 600 ~/.ssh/id_dsa ~/.ssh/id_rsa
-        cp -f keys/id_rsa /root/.ssh/id_rsa
-        cp -f keys/id_dsa /root/.ssh/id_dsa
-        chown root:admin /root/.ssh/id_rsa /root/.ssh/id_dsa
-        chmod 600 /root/.ssh/id_rsa /root/.ssh/id_dsa
+    cp -f keys/id_rsa /root/.ssh/id_rsa
+    cp -f keys/id_dsa /root/.ssh/id_dsa
+    chown root /root/.ssh/id_rsa /root/.ssh/id_dsa
+    chmod 600 /root/.ssh/id_rsa /root/.ssh/id_dsa
 fi
 
 #Database scripts
