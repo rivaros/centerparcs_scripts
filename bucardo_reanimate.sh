@@ -11,17 +11,19 @@ fi
 if [ `uname` == "Darwin" ]; then
 	chmod +a "$USER allow write,append,file_inherit,directory_inherit" /opt/local/var/log
 	LOGROOT='/opt/local/var/log'
+        BINROOT='/opt/local/bin'
 elif [ `uname` == "Linux" ];then
 	setfacl -m u:$USER:rwx /var/log
 	setfacl -d -m u:$USER:rwx /var/log
 	LOGROOT='/var/log'
+	BINROOT='/usr/bin'
 fi
 
 if [ ! -d /var/run/bucardo ]; then
     mkdir -p /var/run/bucardo
     chown -R $USER /var/run/bucardo >/dev/null 2>&1
     echo "Bucardo initial start" >> $LOGROOT/bucardo.restart.log
-    sudo -u $USER bucardo start --debugdir=$LOGROOT
+    sudo -u $USER $BINROOT/bucardo start --debugdir=$LOGROOT
     exit
 else
     chown -R $USER /var/run/bucardo
@@ -65,7 +67,7 @@ if [ $error -eq 1 ]; then
       rm $f
     done
   fi
-  sudo -u $USER bucardo start --debugdir=$LOGROOT
+  sudo -u $USER $BINROOT/bucardo start --debugdir=$LOGROOT
 
 else
 

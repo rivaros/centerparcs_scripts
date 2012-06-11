@@ -10,6 +10,11 @@
     <string>root</string>
     <key>Program</key>
     <string>/opt/local/bin/bucardo_reanimate.sh</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/opt/local/bin/bucardo_reanimate.sh</string>
+      <string>_www</string>
+    </array>
     <key>StartInterval</key>
     <integer>60</integer>
 </dict>

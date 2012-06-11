@@ -36,17 +36,17 @@ grep -l "export EDITOR=" ~/.bashrc >/dev/null || echo "export EDITOR=nano" | tee
 grep -l "export PGDATABASE=" ~/.bashrc >/dev/null || echo "export PGDATABASE=mmp" | tee -a ~/.bashrc >/dev/null
 grep -l "export PGUSER=" ~/.bashrc >/dev/null || echo "export PGUSER=postgres" | tee -a ~/.bashrc >/dev/null
 grep -l "type -p -a mc" ~/.bashrc >/dev/null || echo "type -p -a mc >/dev/null && alias mc=\". /opt/local/libexec/mc/mc-wrapper.sh\"" | tee -a ~/.bashrc >/dev/null
-grep -l "alias backup-central=\"~/bin/backup-central.sh\"" ~/.bashrc >/dev/null \
-|| echo "alias backup-central=\"~/bin/backup-central.sh\"" \
+grep -l "alias backup-central=" ~/.bashrc >/dev/null \
+|| echo "alias backup-central=\"/bin/bash /centerparcs/bin/scripts_linux/backup-central.sh\"" \
 | tee -a ~/.bashrc > /dev/null
-grep -l "alias backup-central-scheme=\"~/bin/backup-central-scheme.sh\"" ~/.bashrc >/dev/null \
-|| echo "alias backup-central-scheme=\"~/bin/backup-central-scheme.sh\"" \
+grep -l "alias backup-central-scheme=" ~/.bashrc >/dev/null \
+|| echo "alias backup-central-scheme=\"/bin/bash /centerparcs/bin/scripts_linux/backup-central-scheme.sh\"" \
 | tee -a ~/.bashrc > /dev/null
-grep -l "alias restore-central=\"~/bin/restore-central.sh\"" ~/.bashrc >/dev/null \
-|| echo "alias restore-central=\"~/bin/restore-central.sh\"" \
+grep -l "alias restore-central=" ~/.bashrc >/dev/null \
+|| echo "alias restore-central=\"/bin/bash /centerparcs/bin/scripts_linux/restore-central.sh\"" \
 | tee -a ~/.bashrc > /dev/null
-grep -l "alias restore-location=\"~/bin/restore-location.sh\"" ~/.bashrc >/dev/null \
-|| echo "alias restore-location=\"~/bin/restore-location.sh\"" \
+grep -l "alias restore-location=" ~/.bashrc >/dev/null \
+|| echo "alias restore-location=\"/bin/bash /centerparcs/bin/scripts_linux/restore-location.sh\"" \
 | tee -a ~/.bashrc > /dev/null
 
 #ENVIRONMENT Configuration ~/.profile
@@ -137,10 +137,8 @@ chown root:admin /var/root/.ssh/id_rsa /var/root/.ssh/id_dsa
 chmod 600 /var/root/.ssh/id_rsa /var/root/.ssh/id_dsa
 
 #Database scripts
-mkdir -p ~/bin
-cp -R database/*.* ~/bin
+read -p "Press a ley to restore location without -c"
 cp -f location.dump ~/location.dump
-. ~/bin/restore-location.sh
 
 
 

@@ -1,12 +1,11 @@
 #!/bin/bash
 echo "Checking Perl environment for missing modules"
 
-
-#######
+#################################################################################
 #
 #  Check Perl modules and install if any are missing
 #
-
+################################################################################
 
 echo -n "Checking boolean..."
 perl -Mboolean -e 1 > /dev/null 2>&1
@@ -82,6 +81,12 @@ else
     echo "OK"
 fi
 
+####################################################################################################
+#
+#         Create Bucardo installation folder, bucardo run folder, and try to install, if not already
+#
+###################################################################################################
+
 if [ ! -d bucardo ]; then
     echo "Loading Bucardo...."
     git clone git://bucardo.org/bucardo.git
@@ -112,7 +117,6 @@ elif [ `uname` == "Linux" ];then
 	BINROOT='/usr/bin'
 fi
 
-
 #Bucardo general settings
 bucardo set piddir=/var/run/bucardo
 bucardo set log_conflict_file=$LOGROOT/bucardo_conflict.log
@@ -122,33 +126,46 @@ bucardo set warning_file=$LOGROOT/bucardo.warning.log
 bucardo set default_email_from=bucardo@makemyphoto.nl
 bucardo set default_email_to=r.ivantsiv@gmail.com
 
+##########################################################################################################################
+#
+# Start Bucardo Configurator
+#
+##########################################################################################################################
+. bucardo_configure.sh
+
+
+########################################################################################################################
+#
+#  Install Bucardo reanimator
+#
+########################################################################################################################
+
 #Bucardo checker
 cp -f bucardo_reanimate.sh $BINROOT/bucardo_reanimate.sh
 chmod 755 $BINROOT/bucardo_reanimate.sh
 
-read -p "Enter username, under which bucardo will run (should be webserver user):" bucardouser
-if [ -z "`grep "^${bucardouser}:" /etc/passwd`" ];then
-	echo "Such user not found in the system"
-	exit
-fi
-
-exit
-
-
 if [ `uname` == "Darwin" ];then
+#On MacOS X bucardo will run under _www user
+	grep -l "setenv PATH" /etc/launchd.conf >/dev/null || echo "setenv PATH $PATH" | tee -a /etc/launchd.conf >/dev/null
+	launchctl setenv PATH $PATH
 	cp -R LaunchDaemons/mmp.bucardo.check /opt/local/etc/LaunchDaemons
 	ln -fs /opt/local/etc/LaunchDaemons/mmp.bucardo.check/mmp.bucardo.check.plist /Library/LaunchDaemons/mmp.bucardo.check.plist
 	launchctl unload /Library/LaunchDaemons/mmp.bucardo.check.plist
 	launchctl load /Library/LaunchDaemons/mmp.bucardo.check.plist
+
 fi
 
 if [ `uname` == "Linux" ];then
+	read -p "Enter username, under which bucardo will run (should be webserver user):" bucardouser
+	if [ -z "`grep "^${bucardouser}:" /etc/passwd`" ];then
+		echo "Such user not found in the system"
+		exit
+	fi
 	[ -n "`grep bucardo_reanimate.sh /etc/crontab`" ] \
 	|| echo "*/5  *  *  *  *  root  /usr/bin/bucardo_reanimate.sh $bucardouser" >>/etc/crontab
 	service cron restart
 fi
 	
-
 
 
 
