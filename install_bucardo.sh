@@ -86,29 +86,6 @@ fi
 #         Create Bucardo installation folder, bucardo run folder, and try to install, if not already
 #
 ###################################################################################################
-
-if [ ! -d bucardo ]; then
-    echo "Loading Bucardo...."
-    git clone git://github.com/rivaros/bucardo.git
-fi
-
-if [ ! -d /var/run/bucardo ]; then
-    mkdir /var/run/bucardo
-fi
-
-if [ -z "`bucardo show all | grep bucardo_current_version`" ]; then
-	echo "Bucardo is not yet installed. We try."
-	cd bucardo
-	perl Makefile.PL
-	make
-	make install
-	cd ..
-	bucardo install 
-	read -p "If previous operation failed press Ctr+C to exit script"
-else
-	echo "Bucardo seems to be installed already. If you want to reinstall, remove bucardo database."
-fi
-
 if [ `uname` == "Darwin" ]; then
         LOGROOT='/opt/local/var/log'
 	BINROOT='/opt/local/bin'
@@ -116,6 +93,32 @@ elif [ `uname` == "Linux" ];then
         LOGROOT='/var/log'
 	BINROOT='/usr/local/bin'
 fi
+
+
+if [ ! -d bucardo ]; then
+    echo "Loading Bucardo...."
+    git clone git://github.com/rivaros/bucardo.git
+    cd bucardo
+    perl Makefile.PL
+    make
+    make install
+    cp -f bucardo $BINROOT\bucardo
+    cd ..
+fi
+
+
+if [ ! -d /var/run/bucardo ]; then
+    mkdir /var/run/bucardo
+fi
+
+if [ -z "`bucardo show all | grep bucardo_current_version`" ]; then
+	echo "Bucardo is not yet installed"
+	bucardo install 
+	read -p "If previous operation failed press Ctr+C to exit script"
+else
+	echo "Bucardo seems to be installed already. If you want to reinstall, remove bucardo database."
+fi
+
 
 #Bucardo general settings
 bucardo set piddir=/var/run/bucardo
