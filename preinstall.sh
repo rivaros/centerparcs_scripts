@@ -117,6 +117,7 @@ cp -R confs/stunnel/certificates /opt/local/var/lib/stunnel
 chown -R nobody:admin /opt/local/var/lib/stunnel
 cp -R LaunchDaemons/org.macports.stunnel /opt/local/etc/LaunchDaemons
 ln -fs /opt/local/etc/LaunchDaemons/org.macports.stunnel/org.macports.stunnel.plist /Library/LaunchDaemons/org.macports.stunnel.plist
+chmod 755 /opt/local/etc/LaunchDaemons/org.macports.stunnel/stunnel.wrapper
 port unload stunnel
 killall stunnel
 port load stunnel
@@ -126,7 +127,10 @@ if [ ! -d /opt/local/var/db/postgresql91/defaultdb ]; then
 	#create new database cluster
 	mkdir -p /opt/local/var/db/postgresql91/defaultdb
 	chown postgres:postgres /opt/local/var/db/postgresql91/defaultdb
+	currentfolder=`pwd`
+	cd /opt/local/var/db/postgresql91/bin
 	su postgres -c '/opt/local/lib/postgresql91/bin/initdb -D /opt/local/var/db/postgresql91/defaultdb'
+	cd $currentfolder
 fi
 if [ -f /opt/local/var/db/postgresql91/defaultdb/pg_hba.conf -a ! -f /opt/local/var/db/postgresql91/defaultdb/pg_hba.conf.macports ]; then
     cp -f /opt/local/var/db/postgresql91/defaultdb/pg_hba.conf /opt/local/var/db/postgresql91/defaultdb/pg_hba.conf.macports
