@@ -110,7 +110,7 @@ if [ -f /opt/local/etc/php5/php.ini -a ! -f /opt/local/etc/php5/php.ini.macports
     cp -f /opt/local/etc/php5/php.ini /opt/local/etc/php5/php.ini.macports
 fi
 cp -f confs/php/php.ini /opt/local/etc/php5/php.ini
-killall httpd
+killall httpd 2>/dev/null
 #/opt/local/apache2/bin/apachectl -k restart
 port load apache2
 
@@ -131,7 +131,7 @@ cp -R LaunchDaemons/org.macports.stunnel /opt/local/etc/LaunchDaemons
 ln -fs /opt/local/etc/LaunchDaemons/org.macports.stunnel/org.macports.stunnel.plist /Library/LaunchDaemons/org.macports.stunnel.plist
 chmod 755 /opt/local/etc/LaunchDaemons/org.macports.stunnel/stunnel.wrapper
 port unload stunnel
-killall stunnel
+killall stunnel 2>/dev/null
 port load stunnel
 
 ##############################################################################################################################################
@@ -159,7 +159,7 @@ fi
 cp -f confs/postgres/pg_hba.conf /opt/local/var/db/postgresql91/defaultdb/pg_hba.conf
 cp -f confs/postgres/postgresql.conf /opt/local/var/db/postgresql91/defaultdb/postgresql.conf
 port unload postgresql91-server
-killall postgresql
+killall postgresql 2>/dev/null
 port load postgresql91-server
 echo "Waiting 10 secs until postgres is up..."
 sleep 10
