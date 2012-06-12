@@ -106,6 +106,10 @@ if [ ! -d bucardo ]; then
     cd ..
 fi
 
+if [ ! -d /var/run/bucardo ]; then
+    mkdir /var/run/bucardo
+fi
+
 if [ -z "`bucardo show all | grep bucardo_current_version`" ]; then
 	echo "Bucardo is not yet installed"
 	bucardo install 
