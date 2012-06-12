@@ -153,6 +153,7 @@ fi
 
 if [ `uname` == "Darwin" ];then
 #On MacOS X bucardo will run under _www user
+	chown -R _www /var/run/bucardo
         sudo -u _www $BINROOT/bucardo stop
 	echo "waiting 10 seconds..."
 	sleep 10
