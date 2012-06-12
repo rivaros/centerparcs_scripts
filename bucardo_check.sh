@@ -13,10 +13,6 @@ if [ ! -f /var/run/bucardo/bucardo.mcp.pid ]; then
         error=1;
         errortext="$errortext\nERROR: no bucardo.mcp.pid found\n"
 fi
-if [ ! -f /var/run/bucardo/bucardo.vac.pid ]; then
-        error=1;
-        errortext="$errortext\nERROR: no bucardo.vac.pid found\n"
-fi
 if ls /var/run/bucardo/*.pid >/dev/null 2>&1; then
   for f in /var/run/bucardo/*.pid;
     do
