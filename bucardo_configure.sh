@@ -4,16 +4,17 @@ echo "################################################"
 echo "#   MAKEMYPHOTO BUCARDO CONFIGURATOR           #"
 echo "################################################"
 
-echo "1. Source:127.0.0.1:5432 Dest:127.0.0.1:6432 "
+echo "1. Source:127.0.0.1:5432 Dest:127.0.0.1:7432 "
 echo "2. Source:[your_ip] Dest:127.0.0.1:5432      "
 echo "3. Delete sync"
+echo "4. Source:127.0.0.1:5432 Dest:127.0.0.1:6432 (used for testing)"
 read -p "Enter your choice[1]:" choice
 
 if [[ $choice == '' ]]; then
 	choice=1
 fi
 
-if [[ $choice != 1 && $choice != 2 && $choice != 3 ]];then
+if [[ $choice != 1 && $choice != 2 && $choice != 3 && $choice != 4 ]];then
 	echo "Wrong choice"
 	exit
 fi
@@ -38,7 +39,7 @@ if [[ $choice == 1 ]];then
    		bucardo add db local db=mmp
 	fi
 	if [ -z "`bucardo list db central | grep central`" ]; then
-    		bucardo add db central db=mmp dbhost=127.0.0.1 dbport=6432 dbuser=postgres dbpass=pybvrb$%
+    		bucardo add db central db=mmp dbhost=127.0.0.1 dbport=7432 dbuser=postgres dbpass=pybvrb$%
 	fi
 elif [[ $choice == 2 ]];then
         if [ -z "`bucardo list db local$syncname | grep local$syncname`" ]; then
@@ -47,6 +48,13 @@ elif [[ $choice == 2 ]];then
         if [ -z "`bucardo list db central$syncname | grep central$syncname`" ]; then
                 bucardo add db central$syncname db=mmp 
         fi
+elif [[ $choice == 4 ]]; then
+        if [ -z "`bucardo list db local | grep local`" ]; then
+                bucardo add db local db=mmp
+        fi
+        if [ -z "`bucardo list db central | grep central`" ]; then
+                bucardo add db central db=mmp dbhost=127.0.0.1 dbport=6432 dbuser=postgres dbpass=pybvrb$%
+        fi
 fi
 
 ######################################################################################################
@@ -54,7 +62,7 @@ fi
 #	add local tables
 #
 #####################################################################################################
-if [[ $choice == 1 ]];then
+if [[ $choice == 1 || $choice == 4 ]];then
 	if [ -z "`bucardo list table LocationFacilities | grep \"LocationFacilities  DB: local\"`" ]; then
     		bucardo add table public.LocationFacilities db=local herd=localherd standard_conflict=target
 	fi
@@ -108,7 +116,7 @@ bucardo add customcols public.Reservations "SELECT \"ReservationGUID\", \"Client
 #
 ######################################################################################################
 
-if [[ $choice == 1 ]];then
+if [[ $choice == 1 || $choice == 4 ]];then
 	if [ -z "`bucardo list dbgroup standard | grep standard`" ]; then
     		bucardo add dbgroup standard local:source central
 	fi
@@ -118,7 +126,7 @@ elif [[ $choice == 2 ]];then
         fi
 fi
 
-if [[ $choice == 1 ]];then
+if [[ $choice == 1 || $choice == 4 ]];then
 	if [ -z "`bucardo list sync standard | grep standard`" ]; then
     		bucardo add sync standard herd=localherd dbs=standard
 	fi
