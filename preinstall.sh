@@ -1,5 +1,17 @@
 #!/bin/bash
 
+#################################################################################################################################
+#
+# Install sysctl.conf & reboot
+#
+################################################################################################################################
+
+if [ ! -f /etc/sysctl.conf ];then
+	cp -f confs/sysctl.conf /etc/sysctl.conf
+	read -p "System will reboot now..."
+	reboot
+fi
+
 if [ `uname` == "Darwin" ];then
 	type -p -a port >/dev/null || exit "MacPorts not installed"
 	port install perl5.12 +shared
@@ -122,11 +134,17 @@ port unload stunnel
 killall stunnel
 port load stunnel
 
-#Postgres
+##############################################################################################################################################
+#
+#	Installing Postgres
+#
+#############################################################################################################################################
+
 if [ ! -d /opt/local/var/db/postgresql91/defaultdb ]; then
 	#create new database cluster
 	mkdir -p /opt/local/var/db/postgresql91/defaultdb
 	chown postgres:postgres /opt/local/var/db/postgresql91/defaultdb
+	chmod 700 /opt/local/var/db/postgresql91/defaultdb
 	currentfolder=`pwd`
 	cd /opt/local/var/db/postgresql91/bin
 	su postgres -c '/opt/local/lib/postgresql91/bin/initdb -D /opt/local/var/db/postgresql91/defaultdb'
@@ -187,9 +205,7 @@ echo "Location.dump was copied to your home directory"
 cp -f central.dump ~/central.dump
 echo "Central.dump was copied to your home directory"
 
-
-
-
-
-
+#Restore location
+read -p "Press a ley to restore location" 
+./restore-location.sh
 
