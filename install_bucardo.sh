@@ -110,9 +110,22 @@ if [ ! -d /var/run/bucardo ]; then
     mkdir /var/run/bucardo
 fi
 
+if [ `uname` == "Darwin" ];then
+	bucardouser="_www"
+elif [ `uname` == "Linux" ];then
+       read -p "Enter username, under which bucardo will run (should be webserver user):" bucardouser
+       if [ -z "`grep "^${bucardouser}:" /etc/passwd`" ];then
+              echo "Such user not found in the system"
+              exit
+       fi
+fi
+
+chown -R $bucardouser /var/run/bucardo >/dev/null 2>&1
+
+
 if [ -z "`bucardo show all | grep bucardo_current_version`" ]; then
 	echo "Bucardo is not yet installed"
-	bucardo install 
+	sudo -u $bucardouser $BINROOT/bucardo install 
 	read -p "If previous operation failed press Ctr+C to exit script"
 else
 	echo "Bucardo seems to be installed already. If you want to reinstall, remove bucardo database."
