@@ -33,8 +33,10 @@ function diagnose() {
 function check() {
 
     #simple postgres check
-    if [ ! -d /opt/local/var/db/postgresql91/defaultdb ];then
-        return 0;
+    if [ `uname` == "Darwin" ];then
+        if [ ! -d /opt/local/var/db/postgresql91/defaultdb ];then
+            return 0;
+        fi
     fi
     
     perl -Mboolean -e 1 > /dev/null 2>&1

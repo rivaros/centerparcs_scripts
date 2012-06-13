@@ -1,6 +1,10 @@
 
 function check() {
 
+    if [ `uname` == "Linux" ];then
+        return 1
+    fi
+
     if [ ! -f /opt/local/apache2/conf/httpd.conf -o ! -f /opt/local/apache2/conf/httpd.conf.macports ]; then
         if [[ $1 ]];then echo "ERROR: httpd.conf not replaced";else return 0;fi
     fi
@@ -30,6 +34,9 @@ function install() {
     #ENVITONMRNT Configuration /etc/hosts
     grep -l "mmp" /etc/hosts >/dev/null || echo "127.0.0.1   mmp" | tee -a /etc/hosts >/dev/null
 
+    if [ `uname` == "Linux" ];then
+        echo "You should install Apache manually on Linux"
+    fi
 
 
     if [ `uname` == "Darwin" ];then

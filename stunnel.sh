@@ -1,6 +1,10 @@
 
 function check() {
 
+    if [ `uname` == "Linux" ];then
+        return 1
+    fi
+
     if [ `uname` == "Darwin" ];then
         if [ ! -f /opt/local/etc/stunnel/stunnel.conf ];then
             if [[ $1 ]];then echo "ERROR:Stunnel configuration file not copied";else return 0;fi
@@ -34,6 +38,10 @@ function check() {
 }
 
 function install() {
+
+if [ `uname` == "Linux" ];then
+    echo "You need to install Stunnel manually on Linux"
+fi
 
 if [ `uname` == "Darwin" ];then
     #Stunnel

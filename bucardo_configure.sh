@@ -74,9 +74,10 @@ function diagnose() {
 
 function check() {
 
-    #simple postgres check
-    if [ ! -d /opt/local/var/db/postgresql91/defaultdb ];then
-        return 0;
+    if [ `uname` == "Darwin" ];then
+        if [ ! -d /opt/local/var/db/postgresql91/defaultdb ];then
+            return 0;
+        fi
     fi
 
     if [[ `uname` == "Darwin" ]];then
