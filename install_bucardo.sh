@@ -191,9 +191,9 @@ function install() {
             echo "Path not found. Setting..."
             export PATH=/opt/local/lib/postgresql91/bin:$PATH
         fi
-        export PGUSER=postgres
     fi
-    
+    export PGUSER=postgres
+    export PGDATABASE=mmp    
 
     bucardo_installed=0
     psql -d postgres -qAt -c "SELECT 1 FROM pg_roles WHERE rolname='bucardo'" | grep -q 1 && bucardo_installed=1
