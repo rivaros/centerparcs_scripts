@@ -79,6 +79,7 @@ function check_ports() {
 
 function install_ports() {
     if [ `uname` == "Darwin" ];then
+        xcode-select -switch /Applications/XCode.app/Contents/Developer 
         type -p -a port >/dev/null || exit "MacPorts not installed"
         port install perl5.12 +shared
         port install p5.12-dbi
