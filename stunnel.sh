@@ -28,6 +28,7 @@ function check() {
               
     fi           
     
+    if [[ $1 ]];then echo "Stunnel check ended";fi
     return 1
 
 }

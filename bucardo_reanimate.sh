@@ -16,6 +16,23 @@ elif [ `uname` == "Linux" ];then
 	BINROOT='/usr/local/bin'
 fi
 
+if [ ! -d /var/run/bucardo ]; then
+        mkdir /var/run/bucardo
+fi
+chown -R $USER /var/run/bucardo >/dev/null 2>&1
+
+if [ `uname` == "Darwin" ];then
+    chmod -R +a "$USER allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" $LOGROOT
+fi
+
+if [ `uname` == "Linux" ];then
+
+    setfacl -R -m u:$USER $LOGROOT
+    setfacl -dR -m u:$USER $LOGROOT            
+
+fi
+
+
 error=0
 if [ ! -f /var/run/bucardo/bucardo.mcp.pid ]; then 
     error=1; 

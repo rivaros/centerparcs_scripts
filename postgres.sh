@@ -47,7 +47,7 @@ function check() {
             
     fi
 
-
+    if [[ $1 ]];then echo "All Postgres tests passed.";fi
 
     return 1
 

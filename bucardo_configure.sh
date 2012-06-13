@@ -74,6 +74,10 @@ function diagnose() {
 
 function check() {
 
+    #simple postgres check
+    if [ ! -d /opt/local/var/db/postgresql91/defaultdb ];then
+        return 0;
+    fi
 
     if [[ `uname` == "Darwin" ]];then
         if [ -z "`echo $PATH | grep \"/opt/local/lib/postgresql91/bin\"`" ];then
@@ -238,6 +242,9 @@ function install() {
             bucardo remove db central$syncname
         fi
 
+        if [ ! -d /var/run/bucardo ]; then
+            mkdir /var/run/bucardo
+        fi
     
         if [ `uname` == "Darwin" ];then
             #On MacOS X bucardo will run under _www user
@@ -253,19 +260,19 @@ function install() {
 
         if [ `uname` == "Linux" ];then
                 apacheuser=`ps -eo user,stat,args | grep httpd | grep -v grep | grep -v Ss | head -1 | awk '{print $1}'`
+                
                 if [ $apacheuser == "root" ];then
                     echo "ERROR: cannot grep apache user - grepped root"
                     exit
-                fi
                 elif [ $apacheuser == '' ];then
                     echo "ERROR: cannot grep apache user - grepped null"
                     exit
                 fi    
 
-               if [ -z "`grep "^${apacheuser}:" /etc/passwd`" ];then
+                if [ -z "`grep \"^${apacheuser}:\" /etc/passwd`" ];then
                       echo "Error: User $apacheuser not found in the system"
                       exit
-               fi                
+                fi                
                 echo "Stopping Bucardo..."
                 chown -R $apacheuser /var/run/bucardo >/dev/null 2>&1
                 setfacl -R -m u:$apacheuser $LOGROOT

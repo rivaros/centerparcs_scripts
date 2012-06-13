@@ -32,9 +32,12 @@ function diagnose() {
 
 function check() {
 
-    #export PATH=/opt/local/lib/postgresql91/bin:$PATH
-
-     perl -Mboolean -e 1 > /dev/null 2>&1
+    #simple postgres check
+    if [ ! -d /opt/local/var/db/postgresql91/defaultdb ];then
+        return 0;
+    fi
+    
+    perl -Mboolean -e 1 > /dev/null 2>&1
     if (( $? ));then return 0;fi
     
     perl -MDBI -e 1 > /dev/null 2>&1
@@ -167,13 +170,12 @@ function install() {
             if [ $apacheuser == "root" ];then
                 echo "ERROR: cannot grep apache user - grepped root"
                 exit
-            fi
             elif [ $apacheuser == '' ];then
                 echo "ERROR: cannot grep apache user - grepped null"
                 exit
             fi    
 
-           if [ -z "`grep "^${apacheuser}:" /etc/passwd`" ];then
+           if [ -z "`grep \"^${apacheuser}:\" /etc/passwd`" ];then
                   echo "Error: User $apacheuser not found in the system"
                   exit
            fi
