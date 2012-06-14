@@ -17,9 +17,9 @@ function check() {
     
     #Try to determine Apache user
     apacheuser=`ps -eo user,stat,args | grep httpd | grep -v grep | grep -v Ss | head -1 | awk '{print $1}'`
-    if [ $apacheuser == "root" ];then
+    if [[ $apacheuser == "root" ]];then
         if [[ $1 ]];then echo "ERROR: cannot grep apache user - grepped root";else return 0;fi
-    elif [ $apacheuser == '' ];then
+    elif [[ $apacheuser == '' ]];then
         if [[ $1 ]];then echo "ERROR: cannot grep apache user - grepped null";else return 0;fi
     fi
     
@@ -55,6 +55,7 @@ function install() {
         fi
         cp -f confs/php/php.ini /opt/local/etc/php5/php.ini
         killall httpd 2>/dev/null
+        port unload apache2
         #/opt/local/apache2/bin/apachectl -k restart
         port load apache2
     fi

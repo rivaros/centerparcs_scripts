@@ -169,10 +169,10 @@ function install() {
     elif [ `uname` == "Linux" ];then
             #try to determine Apache user
             apacheuser=`ps -eo user,stat,args | grep httpd | grep -v grep | grep -v Ss | head -1 | awk '{print $1}'`
-            if [ $apacheuser == "root" ];then
+            if [[ $apacheuser == "root" ]];then
                 echo "ERROR: cannot grep apache user - grepped root"
                 exit
-            elif [ $apacheuser == '' ];then
+            elif [[ $apacheuser == '' ]];then
                 echo "ERROR: cannot grep apache user - grepped null"
                 exit
             fi    
