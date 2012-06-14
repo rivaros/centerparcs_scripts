@@ -55,7 +55,7 @@ install_project() {
     echo "What kind of installation would you like?"
     read -p "[p]roduction or [d]evelopment? [production]" installtype
     
-    if [[ $installtype == "d" ]];then
+    if [[ $installtype == "d" || $installtype == '' ]];then
         cp -f app/config/parameters.ini.dist-location app/config/parameters.ini        
     elif [[ $installtype == "p" ]];then
         cp -f app/config/parameters.ini.dist-location.production app/config/parameters.ini
