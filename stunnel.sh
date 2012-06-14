@@ -78,7 +78,7 @@ if [ ! -z "$1" ]; then
                 if [[ $? == 1 ]];then
                     echo "OK"
                 else
-                    echo "ABSENT"
+                    echo "PROBLEMS"
                 fi
             ;;
             i)

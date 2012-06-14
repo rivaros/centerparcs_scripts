@@ -107,7 +107,7 @@ availablechoices[10]=0
 
 
 # Determine available choices
-if [[ $memorytweak == "ABSENT" ]];then
+if [[ $memorytweak == "PROBLEMS" ]];then
     unset availablechoices[2]
     unset availablechoices[3]
     unset availablechoices[4]
@@ -117,7 +117,7 @@ if [[ $memorytweak == "ABSENT" ]];then
     unset availablechoices[8]
     unset availablechoices[9]
 fi
-if [[ $ports == "ABSENT" ]];then
+if [[ $ports == "PROBLEMS" ]];then
     unset availablechoices[3]
     unset availablechoices[4]
     unset availablechoices[5]
@@ -126,7 +126,7 @@ if [[ $ports == "ABSENT" ]];then
     unset availablechoices[8]
     unset availablechoices[9] 
 fi
-if [[ $project == "ABSENT" ]];then
+if [[ $project == "PROBLEMS" ]];then
     unset availablechoices[4]
     unset availablechoices[5]
     unset availablechoices[6]
@@ -134,19 +134,19 @@ if [[ $project == "ABSENT" ]];then
     unset availablechoices[8]
     unset availablechoices[9]
 fi
-if [[ $apache == "ABSENT" ]];then
+if [[ $apache == "PROBLEMS" ]];then
     unset availablechoices[7]
     unset availablechoices[8]
 fi
-if [[ $stunnel == "ABSENT" ]];then
+if [[ $stunnel == "PROBLEMS" ]];then
     unset availablechoices[7]
     unset availablechoices[8]
 fi
-if [[ $postgres == "ABSENT" ]];then
+if [[ $postgres == "PROBLEMS" ]];then
     unset availablechoices[7]
     unset availablechoices[8]
 fi
-if [[ $bucardoinstall == "ERRORS" ]];then
+if [[ $bucardoinstall == "PROBLEMS" ]];then
     unset availablechoices[8]
 fi
 

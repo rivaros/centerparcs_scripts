@@ -327,7 +327,7 @@ if [ ! -z "$1" ]; then
                 if [[ $? == 1 ]];then
                     echo "OK"
                 else
-                    echo "ERRORS"
+                    echo "PROBLEMS"
                 fi
             ;;
             i)
