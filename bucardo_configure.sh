@@ -298,7 +298,7 @@ function install() {
 
         if [ `uname` == "Darwin" ];then
         #On MacOS X bucardo will run under _www user
-            grep -l "setenv PATH" /etc/launchd.conf >/dev/null || echo "setenv PATH $PATH" | tee -a /etc/launchd.conf >/dev/null
+            grep -l "setenv PATH" /etc/launchd.conf >/dev/null 2>&1 || echo "setenv PATH $PATH" | tee -a /etc/launchd.conf >/dev/null
             launchctl setenv PATH $PATH
             cp -R LaunchDaemons/mmp.bucardo.check /opt/local/etc/LaunchDaemons
             ln -fs /opt/local/etc/LaunchDaemons/mmp.bucardo.check/mmp.bucardo.check.plist /Library/LaunchDaemons/mmp.bucardo.check.plist
