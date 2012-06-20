@@ -63,7 +63,7 @@ if [ `uname` == "Linux" ];then
     echo "You need to install Postgres manually on Linux"
 fi
 
-if [ `uname`== "Darwin" ];then
+if [ `uname` == "Darwin" ];then
     if [ ! -d /opt/local/var/db/postgresql91/defaultdb ]; then
         mkdir -p /opt/local/var/db/postgresql91/defaultdb
         chown postgres:postgres /opt/local/var/db/postgresql91/defaultdb
