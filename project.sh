@@ -73,7 +73,7 @@ install_project() {
 
     if [ `uname` == "Darwin" ];then
         chmod -R +a "_www allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" \
-        logs app/logs app/cache web/media web/uploads
+    logs app/logs app/cache web/media web/uploads app/config/parameters.ini
     fi
     if [ `uname` == "Linux" ];then
             read -p "Enter username, under which webserver is running:" webserveruser
@@ -81,8 +81,8 @@ install_project() {
                     echo "Such user not found in the system"
                     exit
             fi
-            setfacl -R -m u:$webserveruser:rwx logs app/logs app/cache web/media web/uploads
-            setfacl -dR -m u:$webserveruser:rwx logs app/logs app/cache web/media web/uploads    
+            setfacl -R -m u:$webserveruser:rwx logs app/logs app/cache web/media web/uploads app/config/parameters.ini
+            setfacl -dR -m u:$webserveruser:rwx logs app/logs app/cache web/media web/uploads app/config/parameters.ini    
     fi    
 
 
