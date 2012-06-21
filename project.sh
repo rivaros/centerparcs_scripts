@@ -42,8 +42,6 @@ install_project() {
     fi
 
 
-
-
     if [ ! -d /centerparcs ]; then
         git clone ssh://git@project-logs.info:4837/centerparcs.git /centerparcs
     fi
@@ -53,23 +51,16 @@ install_project() {
     php bin/vendors install
     
     echo "What kind of installation would you like?"
-    read -p "[p]roduction or [d]evelopment? [production]" installtype
+    read -p "[p]roduction or [d]evelopment? [p]" installtype
     
     if [[ $installtype == "d" ]];then
-        cp -f app/config/parameters.ini.dist-location app/config/parameters.ini        
+        cp -f app/config/parameters.ini.dist-location app/config/parameters.ini
+        cp -f web/htaccess.dist-dev web/.htaccess
     elif [[ $installtype == "p" || $installtype == '' ]];then
         cp -f app/config/parameters.ini.dist-location.production app/config/parameters.ini
-    fi
-    
-    echo "Would you like to show debugbar?"
-    read -p "Your choice:[no]?" choice
- 
-    if [[ $choice == "yes" ]];then
-        cp -f web/htaccess.dist-dev web/.htaccess
-    else
         cp -f web/htaccess.dist-prod web/.htaccess
-    fi    
-    
+    fi
+
 
     if [ `uname` == "Darwin" ];then
         chmod -R +a "_www allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" \
@@ -90,24 +81,13 @@ install_project() {
     
     
     #aliases creation
-    grep -l "alias backup-central=" ~/.bashrc >/dev/null \
-    || echo "alias backup-central=\"/bin/bash /centerparcs/bin/scripts_linux/backup-central.sh\"" \
+    grep -l "alias backup-mmp=" ~/.bashrc >/dev/null \
+    || echo "alias backup-mmp=\"/bin/bash /centerparcs/bin/scripts_linux/backup-mmp.sh\"" \
     | tee -a ~/.bashrc > /dev/null
-    grep -l "alias backup-central-scheme=" ~/.bashrc >/dev/null \
-    || echo "alias backup-central-scheme=\"/bin/bash /centerparcs/bin/scripts_linux/backup-central-scheme.sh\"" \
+    grep -l "alias restore-mmp=" ~/.bashrc >/dev/null \
+    || echo "alias restore-mmp=\"/bin/bash /centerparcs/bin/scripts_linux/restore-mmp.sh\"" \
     | tee -a ~/.bashrc > /dev/null
-    grep -l "alias backup-local=" ~/.bashrc >/dev/null \
-    || echo "alias backup-local=\"/bin/bash /centerparcs/bin/scripts_linux/backup-local.sh\"" \
-    | tee -a ~/.bashrc > /dev/null
-    grep -l "alias backup-local-scheme=" ~/.bashrc >/dev/null \
-    || echo "alias backup-local-scheme=\"/bin/bash /centerparcs/bin/scripts_linux/backup-local-scheme.sh\"" \
-    | tee -a ~/.bashrc > /dev/null
-    grep -l "alias restore-central=" ~/.bashrc >/dev/null \
-    || echo "alias restore-central=\"/bin/bash /centerparcs/bin/scripts_linux/restore-central.sh\"" \
-    | tee -a ~/.bashrc > /dev/null
-    grep -l "alias restore-location=" ~/.bashrc >/dev/null \
-    || echo "alias restore-location=\"/bin/bash /centerparcs/bin/scripts_linux/restore-location.sh\"" \
-    | tee -a ~/.bashrc > /dev/null
+
 }
 
 

@@ -103,25 +103,19 @@ if [ `uname` == "Darwin" ];then
     #su postgres -c 'pg_ctl -D /opt/local/var/db/postgresql91/defaultdb reload'
     #Database scripts
     
-    cp -f location.dump ~/location.dump
-    echo "Location.dump was copied to your home directory"
-    cp -f central.dump ~/central.dump
-    echo "Central.dump was copied to your home directory"
+    cp -f db.dump ~/db.dump
 
     #Restore location
-    echo -e "How would you like to restore?\n\n"
+    echo -e "Would you like to restore local database now?\n\n"
     echo "Available choices:"
-    echo "no - do not perform restore now"
-    echo "first - first time restore"
-    echo "clear - clear structure during restore"
+    echo "yes - restore"
+    echo "no - skip the step"
     echo -e "\n\n"
     
-    read -p "Enter your choice:[no]" choice  
+    read -p "Enter your choice:[yes]" choice  
     
-    if [[ $choice == "first" ]];then
-        /bin/bash /centerparcs/bin/scripts_linux/restore-location.sh
-    elif [[ $choice == "clear" ]];then
-        /bin/bash /centerparcs/bin/scripts_linux/restore-location.sh -c  
+    if [[ $choice == "yes"  || $choice == '' ]];then
+        /bin/bash /centerparcs/bin/scripts_linux/restore-mmp.sh
     fi
 fi
 
