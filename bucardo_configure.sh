@@ -280,8 +280,8 @@ function install() {
                 fi                
                 echo "Stopping Bucardo..."
                 chown -R $apacheuser /var/run/bucardo >/dev/null 2>&1
-                setfacl -R -m u:$apacheuser $LOGROOT
-                setfacl -dR -m u:$apacheuser $LOGROOT            
+                setfacl -R -m u:$apacheuser:rwx $LOGROOT
+                setfacl -dR -m u:$apacheuser:rwx $LOGROOT            
                 sudo -u $apacheuser $BINROOT/bucardo stop
                 echo "waiting 10 seconds..."
                 sleep 10
