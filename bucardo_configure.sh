@@ -262,6 +262,9 @@ function install() {
 
         if [ `uname` == "Linux" ];then
                 apacheuser=`ps -eo user,stat,args | grep httpd | grep -v grep | grep -v Ss | head -1 | awk '{print $1}'`
+                if [[ $apacheuser == '' ]];then
+                	apacheuser=`ps -eo user,stat,args | grep apache2 | grep -v grep | grep -v Ss | head -1 | awk '{print $1}'`
+            	fi
                 
                 if [[ $apacheuser == "root" ]];then
                     echo "ERROR: cannot grep apache user - grepped root"
