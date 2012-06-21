@@ -85,8 +85,8 @@ function check() {
         if [ -z "`echo $PATH | grep \"/opt/local/lib/postgresql91/bin\"`" ];then
             export PATH=/opt/local/lib/postgresql91/bin:$PATH
         fi
-        export PGUSER=postgres
     fi
+    export PGUSER=postgres
     bucardo_installed=0
     psql -d postgres -qAt -c "SELECT 1 FROM pg_database where datname='bucardo'" | grep -q 1  && bucardo_installed=1
 
