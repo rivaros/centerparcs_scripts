@@ -71,7 +71,9 @@ function check_ports() {
     if [ -z "`port installed stunnel 2>/dev/null | grep \"stunnel\" | grep \"active\"`" ];then
         if [ $1 ];then echo -e "\n\tError: stunnel not installed";else return 0;fi
     fi
-
+    if [ -z "`port installed exiv2 2>/dev/null | grep \"exiv2\" | grep \"active\"`" ];then
+        if [ $1 ];then echo -e "\n\tError: exiv2 not installed";else return 0;fi
+    fi
     
     if [ $1 ];then echo -e "Finished port check";fi    
     return 1
@@ -93,6 +95,7 @@ function install_ports() {
         port install php5-apc php5-curl php5-exif php5-iconv php5-intl php5-mbstring php5-posix php5-sqlite php5-postgresql
         port install rsync screen mc
         port install stunnel
+        port install exiv2
     elif [ `uname` == "Linux" ];then
         echo "You are on Linux. We assume you have all software prerequisites installed"
         read -p "Press any key to continue..."
