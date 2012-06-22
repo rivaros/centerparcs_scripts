@@ -51,20 +51,41 @@ install_project() {
     php bin/vendors install
     
     echo "What kind of installation would you like?"
-    read -p "[p]roduction or [d]evelopment? [p]" installtype
+    echo "Choises:"
+    echo "1. Production location server"
+    echo "2. Development location server"
+    echo "3. Production central server"
+    echo "4. Development central server"
     
-    if [[ $installtype == "d" ]];then
-        cp -f app/config/parameters.ini.dist-location app/config/parameters.ini
-        cp -f web/htaccess.dist-dev web/.htaccess
-    elif [[ $installtype == "p" || $installtype == '' ]];then
-        cp -f app/config/parameters.ini.dist-location.production app/config/parameters.ini
-        cp -f web/htaccess.dist-prod web/.htaccess
+    read -p "Your choice:[1]" installtype
+    if [[ $installtype != 1 && $installtype != 2 && $installtype != 3 && $installtype != 4 && $installtype != '' ]];then
+        echo "Wrong choice"
+        exit
     fi
 
+    if [[ $installtype == 1 || $installtype == '' ]];then
+    	#production location
+        cp -f app/config/parameters.ini.dist-location.production app/config/parameters.ini
+        cp -f web/htaccess.dist-prod web/.htaccess
+    elif [[ $installtype == 2 ]];then
+    	#development location
+        cp -f app/config/parameters.ini.dist-location app/config/parameters.ini
+        cp -f web/htaccess.dist-dev web/.htaccess
+    elif [[ $installtype == 3 ]];then
+    	#production central server
+    	cp -f app/config/parameters.ini.dist-central app/config/parameters.ini
+    	cp -f web/htaccess.dist-prod web/.htaccess
+    elif [[ $installtype == 4 ]];then
+    	#development central server
+    	cp -f app/config/parameters.ini.dist-central app/config/parameters.ini
+    	cp -f web/htaccess.dist-dev web/.htaccess
+    fi
+    
+    echo "ATTENTION: The configuration files were changed according to your choice. But you also need to make sure that database is corresponding. If you are not sure, check point 6. Postgres"
 
     if [ `uname` == "Darwin" ];then
         chmod -R +a "_www allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" \
-    logs app/logs app/cache web/media web/uploads app/config/parameters.ini
+    	logs app/logs app/cache web/media web/uploads app/config/parameters.ini
     fi
     if [ `uname` == "Linux" ];then
             read -p "Enter username, under which webserver is running:" webserveruser
