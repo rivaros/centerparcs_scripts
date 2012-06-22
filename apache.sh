@@ -4,6 +4,11 @@ function check() {
     if [ `uname` == "Linux" ];then
         return 1
     fi
+    
+    if [[ `uname` == *CYGWIN* ]];then
+        if [ $1 ];then echo "You are on Cygwin. This option does not apply";fi
+        return 1		
+	fi    
 
     if [ ! -f /opt/local/apache2/conf/httpd.conf -o ! -f /opt/local/apache2/conf/httpd.conf.macports ]; then
         if [[ $1 ]];then echo "ERROR: httpd.conf not replaced";else return 0;fi

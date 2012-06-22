@@ -1,6 +1,12 @@
 #!/bin/bash
 
 function diagnose() {
+	
+	if [[ `uname` == *CYGWIN* ]];then
+        if [ $1 ];then echo "You are on Cygwin. This option does not apply";fi
+        return 1		
+	fi
+	    
     echo "Checking Perl environment for missing modules"
     
     echo -n "Checking boolean..."
@@ -31,6 +37,11 @@ function diagnose() {
 
 
 function check() {
+	
+	if [[ `uname` == *CYGWIN* ]];then
+        if [ $1 ];then echo "You are on Cygwin. This option does not apply";fi
+        return 1		
+	fi    
 
     #simple postgres check
     if [ `uname` == "Darwin" ];then

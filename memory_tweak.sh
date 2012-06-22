@@ -5,6 +5,11 @@ function check_memory() {
         if [ $1 ];then echo "You are on Linux. This option applies only to MacOS";fi
         return 1
     fi
+    
+    if [[ `uname` == *CYGWIN* ]];then
+        if [ $1 ];then echo "You are on Cygwin. This option applies only to MacOS";fi
+        return 1		
+	fi
 
     if [ ! -f /etc/sysctl.conf ];then
         if [ $1 ];then echo "No /etc/sysctl.conf file found";fi

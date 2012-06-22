@@ -4,6 +4,11 @@ function check_ports() {
     if [ `uname` == "Linux" ];then
         return 1
     fi
+    
+    if [[ `uname` == *CYGWIN* ]];then
+        if [ $1 ];then echo "You are on Cygwin. This option applies only to MacOS";fi
+        return 1		
+	fi
 
     if [ -z "`port installed perl5.12 2>/dev/null | grep \"perl5.12\" | grep \"active\"`" ];then
         if [ $1 ];then echo -e "\n\tError: perl5.12 not installed";else return 0;fi

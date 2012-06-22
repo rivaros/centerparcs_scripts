@@ -4,6 +4,11 @@ function check() {
     if [ `uname` == "Linux" ];then
         return 1
     fi
+    
+    if [[ `uname` == *CYGWIN* ]];then
+        if [ $1 ];then echo "You are on Cygwin. This option does not apply";fi
+        return 1		
+	fi
 
     if [ `uname` == "Darwin" ];then
         if [ ! -f /opt/local/etc/stunnel/stunnel.conf ];then

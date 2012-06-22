@@ -11,6 +11,11 @@ fi
 
         
 function diagnose() {
+	
+	if [[ `uname` == *CYGWIN* ]];then
+        if [ $1 ];then echo "You are on Cygwin. This option does not apply";fi
+        return 1		
+	fi    
 
     if [[ `uname` == "Darwin" ]];then
         if [ -z "`echo $PATH | grep \"/opt/local/lib/postgresql91/bin\"`" ];then
@@ -74,6 +79,11 @@ function diagnose() {
 
 
 function check() {
+	
+	if [[ `uname` == *CYGWIN* ]];then
+        if [ $1 ];then echo "You are on Cygwin. This option does not apply";fi
+        return 1		
+	fi    
 
     if [ `uname` == "Darwin" ];then
         if [ ! -d /opt/local/var/db/postgresql91/defaultdb ];then

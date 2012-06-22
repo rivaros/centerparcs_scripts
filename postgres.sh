@@ -102,22 +102,23 @@ if [ `uname` == "Darwin" ];then
     psql -qAt -c "CREATE EXTENSION dblink;"
     #su postgres -c 'pg_ctl -D /opt/local/var/db/postgresql91/defaultdb reload'
     #Database scripts
-    
-    cp -f db.dump ~/db.dump
-
-    #Restore location
-    echo -e "Would you like to restore local database now?\n\n"
-    echo "Available choices:"
-    echo "yes - restore"
-    echo "no - skip the step"
-    echo -e "\n\n"
-    
-    read -p "Enter your choice:[yes]" choice  
-    
-    if [[ $choice == "yes"  || $choice == '' ]];then
-        /bin/bash /centerparcs/bin/scripts_linux/restore-mmp.sh
-    fi
 fi
+    
+cp -f db.dump ~/db.dump
+
+#Restore location
+echo -e "Would you like to restore local database now?\n\n"
+echo "Available choices:"
+echo "yes - restore"
+echo "no - skip the step"
+echo -e "\n\n"
+    
+read -p "Enter your choice:[yes]" choice  
+    
+if [[ $choice == "yes"  || $choice == '' ]];then
+     /bin/bash /centerparcs/bin/scripts_linux/restore-mmp.sh
+fi
+
 
 }
 
