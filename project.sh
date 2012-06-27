@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [ `uname` == "Darwin" ]; then
+        LOGROOT='/opt/local/var/log'
+        BINROOT='/opt/local/bin'
+else
+        LOGROOT='/var/log'
+        BINROOT='/usr/local/bin'
+fi
+
 check_project() {
     
     if [ ! -d /centerparcs ]; then
@@ -50,9 +58,18 @@ install_project() {
         git clone ssh://git@project-logs.info:4837/centerparcs.git /centerparcs
     fi
 
+	currentdir=`pwd`
     cd /centerparcs
-    git pull
-    php bin/vendors install
+    
+    read -p "Update website to latest version?[yes]" choice
+    if [[ $choice == "yes" || $choice == "" ]];then
+    	git pull
+	fi
+    
+    read -p "Install vendors?[yes]" choice
+    if [[ $choice == "yes" || $choice == "" ]];then
+    	php bin/vendors install
+	fi
     
     echo "What kind of installation would you like?"
     echo "Choises:"
@@ -60,9 +77,10 @@ install_project() {
     echo "2. Development location server"
     echo "3. Production central server"
     echo "4. Development central server"
+    echo "5. Skip this step"
     
     read -p "Your choice:[1]" installtype
-    if [[ $installtype != 1 && $installtype != 2 && $installtype != 3 && $installtype != 4 && $installtype != '' ]];then
+    if [[ $installtype != 1 && $installtype != 2 && $installtype != 3 && $installtype != 4 && $installtype != 5 && $installtype != '' ]];then
         echo "Wrong choice"
         exit
     fi
@@ -85,7 +103,9 @@ install_project() {
     	cp -f web/htaccess.dist-dev web/.htaccess
     fi
     
-    echo "ATTENTION: The configuration files were changed according to your choice. But you also need to make sure that database is corresponding. If you are not sure, check point 6. Postgres"
+    if [[ $installtype != 5 ]];then
+    	echo "ATTENTION: The configuration files were changed according to your choice. But you also need to make sure that database is corresponding. If you are not sure, check point 6. Postgres"
+	fi
 
     if [ `uname` == "Darwin" ];then
         chmod -R +a "_www allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" \
@@ -112,6 +132,34 @@ install_project() {
     grep -l "alias restore-mmp=" ~/.bashrc >/dev/null \
     || echo "alias restore-mmp=\"/bin/bash /centerparcs/bin/scripts_linux/restore-mmp.sh\"" \
     | tee -a ~/.bashrc > /dev/null
+    
+    
+    cd $currentdir
+    cp -f transfer_checker.sh $BINROOT/transfer_checker.sh
+    chmod 755 $BINROOT/transfer_checker.sh
+        
+    if [ `uname` == "Darwin" ];then
+        #On MacOS X bucardo will run under _www user
+            grep -l "setenv PATH" /etc/launchd.conf >/dev/null 2>&1 || echo "setenv PATH $PATH" | tee -a /etc/launchd.conf >/dev/null
+            launchctl setenv PATH $PATH
+            cp -R LaunchDaemons/mmp.transfer.check /opt/local/etc/LaunchDaemons
+            ln -fs /opt/local/etc/LaunchDaemons/mmp.transfer.check/mmp.transfer.check.plist /Library/LaunchDaemons/mmp.transfer.check.plist
+            launchctl unload /Library/LaunchDaemons/mmp.transfer.check.plist
+            launchctl load /Library/LaunchDaemons/mmp.transfer.check.plist
+    fi
+        
+    [ -n "`grep events:transfercontroller /etc/crontab`" ] \
+    || echo "*/5 * * * * SYSTEM $BINROOT/transfer_checker.sh" >>/etc/crontab
+    
+    if [[ `uname` == *CYGWIN* ]];then
+    		net stop cron
+    		net start cron	
+	fi
+	
+	if [[ `uname` == "Linux" ]];then
+			service cron restart	
+	fi
+
 
 }
 
