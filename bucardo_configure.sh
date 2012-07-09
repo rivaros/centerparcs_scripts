@@ -299,35 +299,7 @@ function install() {
                 sudo -u $apacheuser $BINROOT/bucardo start --debugdir=$LOGROOT
         fi
     
-        #Bucardo checker
-        cp -f bucardo_reanimate.sh $BINROOT/bucardo_reanimate.sh
-        chmod 755 $BINROOT/bucardo_reanimate.sh
-        
-        if [ -z "`echo $PATH | grep \"/opt/local/lib/postgresql91/bin:/opt/local/bin:/opt/local/sbin\"`" ];then
-            echo "Path not found. Setting..."
-            export PATH=/opt/local/lib/postgresql91/bin:/opt/local/bin:/opt/local/sbin:$PATH
-        fi
-      
 
-        if [ `uname` == "Darwin" ];then
-        #On MacOS X bucardo will run under _www user
-            grep -l "setenv PATH" /etc/launchd.conf >/dev/null 2>&1 || echo "setenv PATH $PATH" | tee -a /etc/launchd.conf >/dev/null
-            launchctl setenv PATH $PATH
-            cp -R LaunchDaemons/mmp.bucardo.check /opt/local/etc/LaunchDaemons
-            ln -fs /opt/local/etc/LaunchDaemons/mmp.bucardo.check/mmp.bucardo.check.plist /Library/LaunchDaemons/mmp.bucardo.check.plist
-            launchctl unload /Library/LaunchDaemons/mmp.bucardo.check.plist
-            launchctl load /Library/LaunchDaemons/mmp.bucardo.check.plist
-
-        fi
-
-        if [ `uname` == "Linux" ];then
-            [ -n "`grep bucardo_reanimate.sh /etc/crontab`" ] \
-            || echo "*/5  *  *  *  *  root  $BINROOT/bucardo_reanimate.sh $apacheuser" >>/etc/crontab
-            service cron restart
-        fi
-
-    
-    
 }
 
 

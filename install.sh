@@ -34,6 +34,9 @@ process_choice() {
             ./bucardo_configure.sh $arg
             ;;
         9)
+        	./cronjobs.sh $arg
+        	;;
+        99)
             ./uninstall_macports.sh $arg
             ;;
         0)
@@ -60,6 +63,7 @@ stunnel=`./stunnel.sh -c`
 postgres=`./postgres.sh -c`
 bucardoinstall=`./install_bucardo.sh -c`
 bucardoconfigure=`./bucardo_configure.sh -c`
+cronjobs=`./cronjobs.sh -c`
 
 
 echo -e "\n\n\n"
@@ -71,6 +75,7 @@ echo  "Checking Stunnel configuration...$stunnel"
 echo  "Checking Postgres configuration...$postgres"
 echo  "Checking if Bucardo installed...$bucardoinstall"
 echo  "Checking if Bucardo configured...$bucardoconfigure"
+echo  "Checking if cronjobs running...$cronjobs"
 echo -e "\n"
 
 
@@ -90,7 +95,9 @@ choice[7]="7. Install Bucardo"
 subchoice[7]=1
 choice[8]="8. Configure Bucardo"
 subchoice[8]=1
-choice[9]="9. Remove Macports completely"
+choice[9]="9. Install cronjobs"
+subchoice[9]=1
+choice[99]="99. Remove Macports completely"
 choice[0]="0. Exit"
 
 
@@ -103,7 +110,8 @@ availablechoices[6]=6
 availablechoices[7]=7
 availablechoices[8]=8
 availablechoices[9]=9
-availablechoices[10]=0
+availablechoices[10]=99
+availablechoices[11]=0
 
 
 # Determine available choices
@@ -116,6 +124,7 @@ if [[ $memorytweak == "PROBLEMS" ]];then
     unset availablechoices[7]
     unset availablechoices[8]
     unset availablechoices[9]
+    unset availablechoices[10]
 fi
 if [[ $ports == "PROBLEMS" ]];then
     unset availablechoices[3]
@@ -124,7 +133,8 @@ if [[ $ports == "PROBLEMS" ]];then
     unset availablechoices[6]
     unset availablechoices[7]
     unset availablechoices[8]
-    unset availablechoices[9] 
+    unset availablechoices[9]
+    unset availablechoices[10] 
 fi
 if [[ $project == "PROBLEMS" ]];then
     unset availablechoices[4]
@@ -133,10 +143,12 @@ if [[ $project == "PROBLEMS" ]];then
     unset availablechoices[7]
     unset availablechoices[8]
     unset availablechoices[9]
+    unset availablechoices[10]
 fi
 if [[ $apache == "PROBLEMS" ]];then
     unset availablechoices[7]
     unset availablechoices[8]
+    unset availablechoices[9]
 fi
 if [[ $stunnel == "PROBLEMS" ]];then
     unset availablechoices[7]
