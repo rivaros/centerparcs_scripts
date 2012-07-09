@@ -98,7 +98,6 @@ function check() {
     if [ -z "`bucardo list dbgroup standard | grep standard`" ]; then return 0; fi
     if [ -z "`bucardo list sync standard | grep standard`" ]; then return 0; fi
 
-    if [[ ! -f $BINROOT/bucardo_reanimate.sh ]];then return 0;fi
 
     if [ `uname` == "Darwin" ];then
        
@@ -191,11 +190,19 @@ function install() {
                     bucardo add table public.Photoes db=local$syncname herd=localherd$syncname
             fi
         
-    fi   
-    
+    fi
+
+	bucardo remove customcols 1
+	bucardo remove customcols 2
+	bucardo remove customcols 3
+	bucardo remove customcols 4
+	bucardo remove customcols 5
+	bucardo remove customcols 6
+	bucardo remove customcols 7
+
         #Adding custom columns
         bucardo add customcols public.Events "SELECT \"EventGUID\", \"EventName\", \"Date\", \"PrivacyProtected\",\
-        \"Edited\", \"Editor\", \"EditedDate\", \"SymLinkEdited\", \"SymLinkOriginal\",\
+        \"Edited\", \"Editor\", \"EditedDate\", \"SymlinkEdited\", \"SymlinkOriginal\",\
         \"LocationFacility\", \"LocationMark\""
 
         bucardo add customcols public.LocationFacilities "SELECT \"FacilityGUID\", \"Location\", \"FacilityName\", \"LocationMark\""
