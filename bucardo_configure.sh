@@ -9,9 +9,8 @@ elif [ `uname` == "Linux" ];then
 fi
 
 
-        
+
 function diagnose() {
-	
 	if [[ `uname` == *CYGWIN* ]];then
         if [ $1 ];then echo "You are on Cygwin. This option does not apply";fi
         return 1		
@@ -51,8 +50,6 @@ function diagnose() {
     bucardo list dbgroup standard$syncname
     bucardo list sync standard$syncname
     
-    echo -n "Checking Bucardo reanimator..."
-    if [[ -f $BINROOT/bucardo_reanimate.sh ]];then echo "OK";else echo "Absent";fi
     
     if [ `uname` == "Darwin" ];then
         
@@ -60,17 +57,6 @@ function diagnose() {
             echo "ERROR: PATH incorrectly set in /etc/launchd.conf"
         fi
 
-        if [ ! -f /opt/local/etc/LaunchDaemons/mmp.bucardo.check/mmp.bucardo.check.plist ];then
-            echo "ERROR: no plist file found"
-        fi
-        
-        if [ ! -f /Library/LaunchDaemons/mmp.bucardo.check.plist ];then
-            echo "ERROR: no plist symlink found"
-        fi
-            
-        if [ -z "`launchctl list | grep mmp.bucardo.check`" ];then
-            echo "ERROR: bucardo plist not loaded"
-        fi
     
     fi
     
@@ -117,9 +103,6 @@ function check() {
     if [ `uname` == "Darwin" ];then
        
         if [ -z "`grep -l \"setenv PATH /opt/local/lib/postgresql91/bin:/opt/local/bin:/opt/local/sbin\" /etc/launchd.conf`" ];then return 0;fi
-        if [ ! -f /opt/local/etc/LaunchDaemons/mmp.bucardo.check/mmp.bucardo.check.plist ];then return 0; fi
-        if [ ! -f /Library/LaunchDaemons/mmp.bucardo.check.plist ];then return 0; fi
-        if [ -z "`launchctl list | grep mmp.bucardo.check`" ];then return 0; fi
    
     fi
     
