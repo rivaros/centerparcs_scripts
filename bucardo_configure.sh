@@ -195,7 +195,7 @@ function install() {
     
         #Adding custom columns
         bucardo add customcols public.Events "SELECT \"EventGUID\", \"EventName\", \"Date\", \"PrivacyProtected\",\
-        \"Edited\", \"Editor\", \"EditedDate\", \"SymLinkOriginal\", \"SymLinkBig\",\
+        \"Edited\", \"Editor\", \"EditedDate\", \"SymLinkEdited\", \"SymLinkOriginal\",\
         \"LocationFacility\", \"LocationMark\""
 
         bucardo add customcols public.LocationFacilities "SELECT \"FacilityGUID\", \"Location\", \"FacilityName\", \"LocationMark\""
