@@ -3,3 +3,27 @@
 /DBIx-Safe-1.2.5*
 /MMP Installator*
 
+#dot-file exceptions
+.*
+!.gitignore
+!.gitkeep
+!.htaccess
+!.sf
+
+#Ignore all temporary PHP files
+*.php~
+*.ini~
+*-transfer.log
+*-receive.log
+
+#Ignore .htaccess there so everybody can change the front controller app.php -> app_dev.php
+/web/.htaccess
+/nbproject/private/
+/centerparcs.sublime-project
+/centerparcs.sublime-workspace
+/nbproject
+
+/temp
+*.stackdump
+
+
