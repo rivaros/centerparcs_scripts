@@ -38,7 +38,8 @@ function check() {
 	if [ `uname` == "Darwin" ];then
 		
 			#Additional PATH checks on MacOS X
-			if [ -z "`echo $PATH | grep \"/opt/local/lib/postgresql91/bin:/opt/local/bin:/opt/local/sbin\"`" ];then
+			echo $PATH | grep "/opt/local/lib/postgresql91/bin:/opt/local/bin:/opt/local/sbin" > /dev/null 2>&1
+			if (( $? ));then
 				if [[ $1 ]];then echo "ERROR: PATH problems in Darwin environment";else return 0;fi
 	        fi
 	        
