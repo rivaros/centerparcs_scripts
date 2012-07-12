@@ -63,6 +63,8 @@ install_project() {
     
     read -p "Update website to latest version?[yes]" choice
     if [[ $choice == "yes" || $choice == "" ]];then
+    	git reset --hard
+    	git checkout master
     	git pull
 	fi
     
