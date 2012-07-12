@@ -18,6 +18,9 @@ function check() {
     fi
     if [ ! -f /opt/local/etc/php5/php.ini ];then
         if [[ $1 ]];then echo "ERROR: php.ini missing";else return 0;fi
+    fi
+    if [ ! -f /opt/local/etc/php5/full_php_browscap.ini ];then
+        if [[ $1 ]];then echo "ERROR: full_php_browscap.ini is missing";else return 0;fi
     fi    
     
     #Try to determine Apache user
@@ -59,6 +62,7 @@ function install() {
             cp -f /opt/local/etc/php5/php.ini /opt/local/etc/php5/php.ini.macports
         fi
         cp -f confs/php/php.ini /opt/local/etc/php5/php.ini
+        cp -f confs/php/full_php_browscap.ini /opt/local/etc/php5/full_php_browscap.ini
         killall httpd 2>/dev/null
         port unload apache2
         #/opt/local/apache2/bin/apachectl -k restart
