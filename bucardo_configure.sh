@@ -111,6 +111,15 @@ function check() {
 
 function install() {
 
+    if [[ `uname` == "Darwin" ]];then
+        if [ -z "`echo $PATH | grep \"/opt/local/lib/postgresql91/bin\"`" ];then
+            export PATH=/opt/local/lib/postgresql91/bin:$PATH
+        fi
+    fi
+    export PGUSER=postgres
+    export PGDATABASE=mmp
+
+
     echo "This will configure bucardo."
     echo "1. Source:127.0.0.1:5432 Dest:127.0.0.1:7432 (This is standard production setting)"
     echo "2. Source:[your_ip] Dest:127.0.0.1:5432      (This is used only by developers)"
@@ -192,13 +201,10 @@ function install() {
         
     fi
 
-	bucardo remove customcols 1
-	bucardo remove customcols 2
-	bucardo remove customcols 3
-	bucardo remove customcols 4
-	bucardo remove customcols 5
-	bucardo remove customcols 6
-	bucardo remove customcols 7
+    read -p "Update bucardo customcols?[yes]" choice
+    if [[ $choice == "yes" || $choice == "" ]];then
+
+	psql -d bucardo -qAt -c "DELETE FROM bucardo.customcols" 
 
         #Adding custom columns
         bucardo add customcols public.Events "SELECT \"EventGUID\", \"EventName\", \"Date\", \"PrivacyProtected\",\
@@ -213,6 +219,7 @@ function install() {
 
         bucardo add customcols public.Reservations "SELECT \"ReservationGUID\", \"ClientGUID\", \"PhotographerGUID\", \"ReservationTime\",
         \"EVerificationCode\", \"PVerificationCode\", \"Confirmed\", \"LocationMark\""
+   fi
 
         #Add dbgroups and syncs
         if [[ $choice == 1 || $choice == 4 ]];then
