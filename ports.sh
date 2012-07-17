@@ -64,6 +64,9 @@ function check_ports() {
     if [ -z "`port installed php5-postgresql 2>/dev/null | grep \"php5-postgresql\" | grep \"active\"`" ];then
         if [ $1 ];then echo -e "\n\tError: php5-postgresql not installed";else return 0;fi
     fi
+    if [ -z "`port installed php5-soap 2>/dev/null | grep \"php5-soap\" | grep \"active\"`" ];then
+        if [ $1 ];then echo -e "\n\tError: php5-soap not installed";else return 0;fi
+    fi
     if [ -z "`port installed rsync 2>/dev/null | grep \"rsync\" | grep \"active\"`" ];then
         if [ $1 ];then echo -e "\n\tError: rsync not installed";else return 0;fi
     fi
@@ -98,6 +101,7 @@ function install_ports() {
         port install postgresql91 +perl
         port install postgresql91-server
         port install php5-apc php5-curl php5-exif php5-iconv php5-intl php5-mbstring php5-posix php5-sqlite php5-postgresql
+	port install php5-soap
         port install rsync screen mc
         port install stunnel
         port install exiv2
