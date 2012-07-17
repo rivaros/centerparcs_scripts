@@ -135,33 +135,6 @@ install_project() {
     || echo "alias restore-mmp=\"/bin/bash /centerparcs/bin/scripts_linux/restore-mmp.sh\"" \
     | tee -a ~/.bashrc > /dev/null
     
-    
-    cd $currentdir
-    cp -f transfer_checker.sh $BINROOT/transfer_checker.sh
-    chmod 755 $BINROOT/transfer_checker.sh
-        
-    if [ `uname` == "Darwin" ];then
-        #On MacOS X bucardo will run under _www user
-            grep -l "setenv PATH" /etc/launchd.conf >/dev/null 2>&1 || echo "setenv PATH $PATH" | tee -a /etc/launchd.conf >/dev/null
-            launchctl setenv PATH $PATH
-            cp -R LaunchDaemons/mmp.transfer.check /opt/local/etc/LaunchDaemons
-            ln -fs /opt/local/etc/LaunchDaemons/mmp.transfer.check/mmp.transfer.check.plist /Library/LaunchDaemons/mmp.transfer.check.plist
-            launchctl unload /Library/LaunchDaemons/mmp.transfer.check.plist
-            launchctl load /Library/LaunchDaemons/mmp.transfer.check.plist
-    fi
-        
-    [ -n "`grep events:transfercontroller /etc/crontab`" ] \
-    || echo "*/5 * * * * SYSTEM $BINROOT/transfer_checker.sh" >>/etc/crontab
-    
-    if [[ `uname` == *CYGWIN* ]];then
-    		net stop cron
-    		net start cron	
-	fi
-	
-	if [[ `uname` == "Linux" ]];then
-			service cron restart	
-	fi
-
 
 }
 
