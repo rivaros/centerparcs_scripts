@@ -239,6 +239,7 @@ function install() {
        
     fi
     
+    chown $SUDO_USER ~/.pgpass
 
                 
 
