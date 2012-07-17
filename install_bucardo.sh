@@ -239,7 +239,9 @@ function install() {
        
     fi
     
-    chown $SUDO_USER ~/.pgpass
+    if [ $SUDO_USER ];then
+    	chown $SUDO_USER ~/.pgpass
+	fi
 
                 
 
